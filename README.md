@@ -2,8 +2,8 @@
 
 <div align="center">
 
-![Swift](https://img.shields.io/badge/Swift-5.9-orange.svg)
-![iOS](https://img.shields.io/badge/iOS-15.0+-blue.svg)
+![Swift](https://img.shields.io/badge/Swift-6-orange.svg)
+![iOS](https://img.shields.io/badge/iOS-17.0+-blue.svg)
 ![SwiftUI](https://img.shields.io/badge/SwiftUI-4.0+-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
@@ -66,7 +66,7 @@ AIChat是一个用于学习和实践iOS开发架构演进的项目。从最基�
 
 <div align="center">
 
-*应用截图将在开发过程中添加*
+*应用截图将在后续开发过程中添加*
 
 </div>
 
@@ -82,6 +82,10 @@ AIChat是一个用于学习和实践iOS开发架构演进的项目。从最基�
 
 ### 依赖管理
 - Swift Package Manager
+    - SwiftfulThink 系列
+    - SDWebImageSwiftUI
+    - Firebase
+    - Mixpanel
 - 原生iOS框架
 
 ---
@@ -228,15 +232,6 @@ Product → Test
 
 ---
 
-## 👨‍💻 作者
-
-**sinduke**
-
-- GitHub: [@sinduke](https://github.com/sinduke)
-- 邮箱: sinduke@outlook.com
-
----
-
 ## 🙏 致谢
 
 感谢所有为这个项目做出贡献的开发者和设计师！
@@ -244,6 +239,8 @@ Product → Test
 ---
 
 <div align="center">
+如果你想要学习Swift和提升Swift技能 请关注 YouTube: Swiftful Thinking
+如果想要学习Swift组件 请关注 YouTube: Kavsoft
 
 **⭐ 如果这个项目对你有帮助，请给它一个星标！**
 
