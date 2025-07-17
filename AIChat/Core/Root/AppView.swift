@@ -13,24 +13,23 @@ struct AppView: View {
         AppViewBuilder(
             showTabBar: showTabBar,
             tabbarView: {
-                ZStack {
-                    Color.red.ignoresSafeArea()
-                    Text("TabbarView")
-                }
+                TabBarView()
             },
             onboardingView: {
-                ZStack {
-                    Color.blue.ignoresSafeArea()
-                    Text("OnboardingView")
-                }
+                WelcomeView()
         })
+        .onTapGesture {
+            showTabBar.toggle()
+        }
     }
 }
 
 #Preview("OnboardingView") {
-    AppView()
+    @Previewable @AppStorage("showTabbarView") var showTabBar: Bool = true
+    AppView(showTabBar: showTabBar)
 }
 
 #Preview("TabbarView") {
-    AppView(showTabBar: true)
+    @Previewable @AppStorage("showTabbarView") var showTabBar: Bool = false
+    AppView(showTabBar: showTabBar)
 }
