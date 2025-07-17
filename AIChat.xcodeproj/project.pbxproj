@@ -121,6 +121,7 @@
 				F2DF8A272E28C64D008C4F52 /* Sources */,
 				F2DF8A282E28C64D008C4F52 /* Frameworks */,
 				F2DF8A292E28C64D008C4F52 /* Resources */,
+				F2AC2CBB2E28EE7000E81FD2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -250,6 +251,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F2AC2CBB2E28EE7000E81FD2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/swiftlint.log",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  cd \"$SRCROOT\"\n    swiftlint --fix && swiftlint # swiftlint --fix &&\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F2DF8A272E28C64D008C4F52 /* Sources */ = {
@@ -419,6 +442,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VKUPTBL6XB;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AIChat/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
@@ -453,6 +477,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VKUPTBL6XB;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AIChat/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
