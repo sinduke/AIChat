@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F2A42F0D2E28DBEA0071E36F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F2A42F0C2E28DBEA0071E36F /* README.md */; };
+		F2A977CC2E2A203A0081CD1B /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = F2A977CB2E2A203A0081CD1B /* SDWebImageSwiftUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2A977CC2E2A203A0081CD1B /* SDWebImageSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +134,7 @@
 			);
 			name = AIChat;
 			packageProductDependencies = (
+				F2A977CB2E2A203A0081CD1B /* SDWebImageSwiftUI */,
 			);
 			productName = AIChat;
 			productReference = F2DF8A2B2E28C64D008C4F52 /* AIChat.app */;
@@ -215,6 +218,9 @@
 			);
 			mainGroup = F2DF8A222E28C64D008C4F52;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F2A977CA2E2A203A0081CD1B /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F2DF8A2C2E28C64D008C4F52 /* Products */;
 			projectDirPath = "";
@@ -629,6 +635,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F2A977CA2E2A203A0081CD1B /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F2A977CB2E2A203A0081CD1B /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F2A977CA2E2A203A0081CD1B /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F2DF8A232E28C64D008C4F52 /* Project object */;
 }

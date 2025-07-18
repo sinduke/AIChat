@@ -17,4 +17,9 @@ extension View {
             .background(.accent)
             .clipShape(.rect(cornerRadius: 16, style: .continuous))
     }
+
+    func tappableContentShape() -> some View {
+        self
+            .contentShape(Rectangle())
+    }
 }

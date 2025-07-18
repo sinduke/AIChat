@@ -19,9 +19,6 @@ struct AppView: View {
                 WelcomeView()
         })
         .environment(appState)
-        .onTapGesture {
-            appState.updateViewState(showTabBarView: !appState.showTabBar)
-        }
     }
 }
 

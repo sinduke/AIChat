@@ -8,20 +8,68 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @State var imageName: String = Constants.randomImages
     var body: some View {
         NavigationStack {
             VStack {
-                Text("Welcome View")
-                    .frame(maxHeight: .infinity)
+                ImageLoaderView(urlString: imageName)
+                    .ignoresSafeArea()
 
-                NavigationLink {
-                    OnboardingCompletedView()
-                } label: {
-                    Text("Get Start")
-                        .callToActionButton()
-                }
+                titleSection
+                    .padding(.top, 24)
+
+                ctaButtons
+                    .padding(16)
+                
+                privacySection
             }
-            .padding(16)
+        }
+    }
+
+    // MARK: -- View
+    private var titleSection: some View {
+        VStack {
+            Text("AI Chat")
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+
+            Text("GitHub @ sinduke")
+                .foregroundStyle(.secondary)
+                .font(.caption)
+        }
+    }
+    
+    private var ctaButtons: some View {
+        VStack {
+            NavigationLink {
+                OnboardingCompletedView()
+            } label: {
+                Text("Get Start")
+                    .callToActionButton()
+            }
+
+            Text("Already have an account? Sign In")
+                .underline()
+                .font(.body)
+                .padding(8)
+                .tappableContentShape()
+                .onTapGesture {
+
+                }
+        }
+    }
+    
+    private var privacySection: some View {
+        HStack {
+            Link(destination: URL(string: Constants.termsOfService)!) {
+                Text("Terms of service")
+            }
+            Circle()
+                .frame(width: 4, height: 4)
+                .foregroundStyle(.accent)
+            Link(destination: URL(string: Constants.privacyPolicyURL)!) {
+                Text("Privacy Policy")
+            }
         }
     }
 }

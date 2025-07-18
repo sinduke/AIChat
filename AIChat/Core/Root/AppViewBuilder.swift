@@ -13,6 +13,7 @@ struct AppViewBuilder<TabbarView: View, OnboardingView: View>: View {
     @ViewBuilder var onboardingView: OnboardingView
     var body: some View {
         ZStack {
+            Color.clear.ignoresSafeArea()
             if showTabBar {
                 tabbarView
                     .transition(.move(edge: .trailing))

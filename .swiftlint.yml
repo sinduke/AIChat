@@ -61,7 +61,7 @@ nesting:
 opt_in_rules:
   - empty_count
   - empty_string
-  - force_unwrapping
+  # - force_unwrapping
   - implicitly_unwrapped_optional
   - prefer_self_type_over_type_of_self
   - prefer_self_in_static_references
@@ -71,8 +71,8 @@ analyzer_rules:
   - unused_import
 
 # 代码质量
-force_unwrapping:
-  severity: warning
+# force_unwrapping: # 强制解包 先关闭
+#   severity: warning
 
 implicitly_unwrapped_optional:
   severity: warning
