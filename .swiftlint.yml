@@ -10,3 +10,98 @@ file_length:
   warning: 750
   error: 1000
 
+# 代码风格相关规则
+trailing_whitespace:
+  severity: warning
+
+trailing_newline:
+  severity: warning
+
+empty_count:
+  severity: warning
+
+empty_string:
+  severity: warning
+
+# 命名规范
+identifier_name:
+  min_length:
+    warning: 2
+    error: 1
+  max_length:
+    warning: 40
+    error: 50
+
+type_name:
+  min_length:
+    warning: 3
+    error: 2
+  max_length:
+    warning: 40
+    error: 50
+
+# 代码复杂度控制
+cyclomatic_complexity:
+  warning: 10
+  error: 20
+
+function_body_length:
+  warning: 50
+  error: 100
+
+function_parameter_count:
+  warning: 6
+  error: 10
+
+nesting:
+  type_level:
+    warning: 5
+    error: 10
+
+opt_in_rules:
+  - empty_count
+  - empty_string
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+  - prefer_self_type_over_type_of_self
+  - prefer_self_in_static_references
+  - vertical_whitespace_between_cases
+
+analyzer_rules:
+  - unused_import
+
+# 代码质量
+force_unwrapping:
+  severity: warning
+
+implicitly_unwrapped_optional:
+  severity: warning
+
+unused_optional_binding:
+  severity: warning
+
+unused_import:
+  severity: warning
+
+# 代码一致性
+prefer_self_type_over_type_of_self:
+  severity: warning
+
+prefer_self_in_static_references:
+  severity: warning
+
+# 性能优化
+unused_closure_parameter:
+  severity: warning
+
+# 可读性
+vertical_whitespace:
+  max_empty_lines: 2
+
+vertical_whitespace_between_cases:
+  severity: warning
+
+# 禁用一些过于严格的规则
+disabled_rules:
+  # - trailing_semicolon
+  # - line_length
