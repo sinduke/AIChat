@@ -20,7 +20,7 @@ struct WelcomeView: View {
 
                 ctaButtons
                     .padding(16)
-                
+
                 privacySection
             }
         }
@@ -38,11 +38,11 @@ struct WelcomeView: View {
                 .font(.caption)
         }
     }
-    
+
     private var ctaButtons: some View {
         VStack {
             NavigationLink {
-                OnboardingCompletedView()
+                OnboardingIntroView()
             } label: {
                 Text("Get Start")
                     .callToActionButton()
@@ -58,7 +58,7 @@ struct WelcomeView: View {
                 }
         }
     }
-    
+
     private var privacySection: some View {
         HStack {
             Link(destination: URL(string: Constants.termsOfService)!) {
