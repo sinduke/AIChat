@@ -20,7 +20,7 @@ struct OnboardingColorView: View {
         .safeAreaInset(edge: .bottom, alignment: .center, spacing: .zero, content: {
             ZStack {
                 if let selectedColor {
-                   ctaButton
+                    ctaButton(selectedColor: selectedColor)
                         .transition(AnyTransition.opacity.animation(.easeInOut))
                         .transition(AnyTransition.move(edge: .bottom))
                 }
@@ -31,18 +31,10 @@ struct OnboardingColorView: View {
             .background(.ultraThinMaterial)
         })
         .animation(.smooth, value: selectedColor)
+        .toolbar(.hidden, for: .navigationBar)
     }
 
     // MARK: -- View
-    private var ctaButton: some View {
-        NavigationLink {
-            OnboardingCompletedView()
-        } label: {
-            Text("Get Start")
-                .callToActionButton()
-        }
-    }
-
     private var colorGrid: some View {
         LazyVGrid(
             columns: Array(
@@ -83,10 +75,20 @@ struct OnboardingColorView: View {
         }
     }
 
+    // MARK: -- func
+    private func ctaButton(selectedColor: Color) -> some View {
+        NavigationLink {
+            OnboardingCompletedView(selectedColor: selectedColor)
+        } label: {
+            Text("Get Start")
+                .callToActionButton()
+        }
+    }
 }
 
 #Preview {
     NavigationStack {
         OnboardingColorView()
     }
+    .environment(AppState())
 }
