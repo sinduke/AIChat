@@ -10,24 +10,9 @@ import SwiftUI
 struct OnboardingIntroView: View {
     var body: some View {
         VStack {
-            Group {
-                Text("Make your own ")
-                +
-                Text("avatars ")
-                    .foregroundStyle(.accent)
-                    .fontWeight(.semibold)
-                +
-                Text("and chat with them. \n\nHave ")
-                +
-                Text("real conversation ")
-                    .foregroundStyle(.accent)
-                    .fontWeight(.semibold)
-                +
-                Text("with AI generated response.")
-            }
-            .frame(maxHeight: .infinity)
-            .baselineOffset(6)
-            .padding(24)
+            Text(makeIntroText())
+                .frame(maxHeight: .infinity)
+
 
             NavigationLink {
                 OnboardingColorView()
@@ -36,9 +21,28 @@ struct OnboardingIntroView: View {
                     .callToActionButton()
             }
         }
+        .baselineOffset(6)
         .padding(24)
-        .font(.title3)
-        .toolbar(.hidden, for: .navigationBar)
+    }
+
+    func makeIntroText() -> AttributedString {
+        var result = AttributedString("Make your own ")
+
+        var avatars = AttributedString("avatars ")
+        avatars.foregroundColor = .accentColor
+        avatars.font = .system(size: UIFont.labelFontSize, weight: .semibold)
+        result += avatars
+
+        result += AttributedString("and chat with them.\n\nHave ")
+
+        var real = AttributedString("real conversation ")
+        real.foregroundColor = .accentColor
+        real.font = .system(size: UIFont.labelFontSize, weight: .semibold)
+        result += real
+
+        result += AttributedString("with AI generated response.")
+
+        return result
     }
 }
 

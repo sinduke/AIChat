@@ -16,9 +16,11 @@ struct AppViewBuilder<TabbarView: View, OnboardingView: View>: View {
             Color.clear.ignoresSafeArea()
             if showTabBar {
                 tabbarView
+                    .id("tabbar")
                     .transition(.move(edge: .trailing))
             } else {
                 onboardingView
+                    .id("onboarding")
                     .transition(.move(edge: .leading))
             }
         }
