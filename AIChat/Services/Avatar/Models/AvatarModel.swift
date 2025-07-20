@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct AvatarModel: Codable {
+struct AvatarModel: Codable, Hashable, Identifiable {
+    var id: String { avatarId }
     let avatarId: String
     let name: String?
     let characterOption: CharacterOption?
