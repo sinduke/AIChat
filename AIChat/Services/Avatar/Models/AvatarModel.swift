@@ -110,7 +110,8 @@ struct AvatarDescriptionBuilder {
     }
 
     var avatarDiscription: String {
-        "A \(characterOption.rawValue) that is \(characterAction) in the \(characterLocation)!"
+        let prefix = characterOption == .alien ? "An" : "A"
+        return "\(prefix) \(characterOption.rawValue) that is \(characterAction) in the \(characterLocation)!"
     }
 }
 
@@ -121,6 +122,10 @@ enum CharacterOption: String, Codable, Hashable, CaseIterable, Identifiable {
 
     static var `default`: Self {
         .cat
+    }
+
+    var startsWithVowel: Bool {
+        [.alien].contains(self)
     }
 }
 
