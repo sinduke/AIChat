@@ -26,9 +26,7 @@ struct CarouselView<Content: View, T: Hashable >: View {
                                     )
                                 ),
                                 axis: .horizontal,
-                                transition: {
-                                    content,
-                                    phase in
+                                transition: { content, phase in
                                     content
                                         .scaleEffect(
                                             phase.isIdentity ? 1 : 0.9

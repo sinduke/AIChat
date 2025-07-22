@@ -19,7 +19,22 @@ extension View {
     }
 
     func tappableContentShape() -> some View {
+        contentShape(Rectangle())
+    }
+
+    func removeListRowFormatting() -> some View {
         self
-            .contentShape(Rectangle())
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .listRowBackground(Color.clear)
+    }
+
+    func addGradientBackgroundForText() -> some View {
+        background(
+            LinearGradient(colors: [
+                .black.opacity(0),
+                .black.opacity(0.3),
+                .black.opacity(0.4)
+            ], startPoint: .top, endPoint: .bottom)
+        )
     }
 }
