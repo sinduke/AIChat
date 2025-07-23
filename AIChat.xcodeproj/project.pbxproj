@@ -275,7 +275,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n        swiftlint --fix && swiftlint # swiftlint --fix &&\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\n# ⚠️ 如果是 SwiftUI 预览，则只执行 swiftlint，不 fix\nif [[ \"$XCODE_RUNNING_FOR_PREVIEWS\" == \"1\" ]]; then\n    echo \"🧪 Running SwiftLint (Preview Mode)\"\n    swiftlint # ✅ 只检查，不修复\n    exit 0\nfi\n\n# 正常构建流程\nif which swiftlint > /dev/null; then\n    if [ \"$CONFIGURATION\" = \"Release\" ]; then\n        echo \"✅ Running SwiftLint + Auto Fix (Release)\"\n        swiftlint --fix && swiftlint\n    else\n        echo \"🛠 Running SwiftLint (Debug)\"\n        swiftlint\n    fi\nelse\n    echo \"⚠️ SwiftLint not installed. Download from https://github.com/realm/SwiftLint\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
