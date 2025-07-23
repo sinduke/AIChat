@@ -37,4 +37,13 @@ extension View {
             ], startPoint: .top, endPoint: .bottom)
         )
     }
+    
+    @ViewBuilder
+    func redactedIfLoading(_ isLoading: Bool) -> some View {
+        if isLoading {
+            self.redacted(reason: .placeholder)
+        } else {
+            self
+        }
+    }
 }
