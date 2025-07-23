@@ -66,7 +66,7 @@ struct ChatRowCellViewBuilder: View {
         Color.indigo.opacity(0.22).ignoresSafeArea()
         VStack {
             ChatRowCellViewBuilder(chat: .mock, getAvatar: {
-//                try? await Task.sleep(for: .seconds(3))
+//                try? await Task.sleep(for: 3)
                 return .mock
             }, getLastChatMessage: {
 //                try? await Task.sleep(for: .seconds(5))
