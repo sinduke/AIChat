@@ -42,19 +42,7 @@ struct ChatRowCellView: View {
             
             if hasNewMessage {
                 Text("NEW")
-                    .font(.caption)
-                    .bold()
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 6)
-                    .background(.blue)
-                    .clipShape(.rect(
-                        topLeadingRadius: 12,
-                        bottomLeadingRadius: 0,
-                        bottomTrailingRadius: 12,
-                        topTrailingRadius: 0,
-                        style: .continuous
-                    ))
+                    .badgeButtonStyle()
             }
         }
         .padding(.vertical, 12)

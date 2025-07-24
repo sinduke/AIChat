@@ -46,4 +46,29 @@ extension View {
             self
         }
     }
+    
+    func rowFormatting() -> some View {
+        self
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 12)
+            .padding(.horizontal, 16)
+            .background(Color(.systemBackground))
+    }
+    
+    func badgeButtonStyle() -> some View {
+        self
+            .font(.caption)
+            .bold()
+            .foregroundStyle(.white)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            .background(.blue)
+            .clipShape(.rect(
+                topLeadingRadius: 12,
+                bottomLeadingRadius: 0,
+                bottomTrailingRadius: 12,
+                topTrailingRadius: 0,
+                style: .continuous
+            ))
+    }
 }
