@@ -71,4 +71,32 @@ extension View {
                 style: .continuous
             ))
     }
+    
+    func dismissKeyboardOnTap() -> some View {
+        self.modifier(DismissKeyboardOnTap())
+    }
+}
+
+struct DismissKeyboardOnTap: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .gesture(
+                TapGesture()
+                    .onEnded {
+                        FocusStateUtils.resignFocus()
+                    }
+            )
+    }
+}
+
+enum FocusStateUtils {
+    private static var currentUnfocus: (() -> Void)?
+
+    static func bind(_ unfocus: @escaping () -> Void) {
+        currentUnfocus = unfocus
+    }
+
+    static func resignFocus() {
+        currentUnfocus?()
+    }
 }
