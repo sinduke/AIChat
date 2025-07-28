@@ -38,10 +38,15 @@ extension View {
         )
     }
     
+    /**
+     .if(...) 会导致生成两个结构不同的视图树，SwiftUI diff 算法可能出现重建、闪烁、动画问题
+     .if(...) 中的条件是 静态不变 或 外部不依赖状态，可以接受。
+     .if(...) 工具方法用于“开发环境、样式静态切换、调试”等用途，但在 动态变化的状态驱动视图中，建议改为 ViewModifier 或 Group 的方式，以确保性能与动画的稳定性。
+     */
     @ViewBuilder
-    func redactedIfLoading(_ isLoading: Bool) -> some View {
-        if isLoading {
-            self.redacted(reason: .placeholder)
+    func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
         } else {
             self
         }

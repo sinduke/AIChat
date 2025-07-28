@@ -49,7 +49,7 @@ struct ChatRowCellViewBuilder: View {
             subTitle: subheadline,
             hasNewMessage: isLoading ? false : hasNewMessage
         )
-        .redactedIfLoading(isLoading)
+        .if(isLoading) { $0.redacted(reason: .placeholder) }
         .task {
             avatar = await getAvatar()
             didLoadAvatar = true

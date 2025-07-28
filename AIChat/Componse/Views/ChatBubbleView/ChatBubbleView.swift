@@ -14,6 +14,7 @@ struct ChatBubbleView: View {
     var showImage: Bool = true
     var imageName: String?
     let offset: CGFloat = 14
+    var onImagePressed: (() -> Void)?
     
     var body: some View {
         HStack(alignment: .top) {
@@ -21,6 +22,10 @@ struct ChatBubbleView: View {
                 ZStack {
                     if let imageName {
                         ImageLoaderView(urlString: imageName)
+                            .anyButton {
+                                onImagePressed?()
+                            }
+                            .accessibilityLabel("avatarButton")
                     } else {
                         Rectangle()
                             .fill(.secondary)

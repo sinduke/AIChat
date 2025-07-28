@@ -10,13 +10,14 @@ import SwiftUI
 struct ChatView: View {
     
     @State private var chatMessages: [ChatMessageModel] = ChatMessageModel.mocks
-    @State private var avatar: AvatarModel?
+    @State private var avatar: AvatarModel? = .mock
     @State private var currentUser: UserModel? = .mock
     @State private var textFieldText: String = ""
     @State private var scrollViewPosition: String?
     
     @State private var showAlert: AnyAppAlert?
     @State private var showChatSetting: AnyAppAlert?
+    @State private var showProfileModal: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -36,6 +37,11 @@ struct ChatView: View {
         }
         .showCustomAlert(alert: $showAlert)
         .showCustomAlert(type: .confirmationDialog, alert: $showChatSetting)
+        .showModal(showModal: $showProfileModal) {
+            if let avatar {
+                profileModal(avatar: avatar)
+            }
+        }
     }
     
     // MARK: -- View --
@@ -47,7 +53,8 @@ struct ChatView: View {
                     ChatBubbleViewBuilder(
                         message: message,
                         isCurrentUser: isCurrentUser,
-                        imageName: isCurrentUser ? nil : avatar?.profileImageName
+                        imageName: isCurrentUser ? nil : avatar?.profileImageName,
+                        onImagePressed: onAvatarImagePressed
                     )
                     .id(message.id)
                 }
@@ -91,6 +98,20 @@ struct ChatView: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 6)
             .background(Color(.secondarySystemBackground))
+    }
+    
+    private func profileModal(avatar: AvatarModel) -> some View {
+        ProfileModalView(
+            imageName: avatar.profileImageName,
+            title: avatar.name,
+            subtitle: avatar.characterOption?.rawValue.capitalized,
+            headline: avatar.characterDescription,
+            onXmarkPressed: {
+                showProfileModal = false
+            }
+        )
+        .padding(40)
+        .transition(.slide)
     }
     
     // MARK: -- Func --
@@ -138,7 +159,11 @@ struct ChatView: View {
                 )
             }
         )
-    } 
+    }
+    
+    private func onAvatarImagePressed() {
+        showProfileModal = true
+    }
 }
 
 #Preview {
