@@ -19,6 +19,28 @@ enum CharacterOption: String, Codable, Hashable, CaseIterable, Identifiable {
     var startsWithVowel: Bool {
         [.alien].contains(self)
     }
+    /**
+     极其特殊的用法
+     Text("^[\(count) Person](inflect: true)")
+     */
+    var plural: String {
+        switch self {
+        case .man:
+            "men"
+            
+        case .woman:
+            "women"
+            
+        case .dog:
+            "dogs"
+            
+        case .cat:
+            "cats"
+            
+        case .alien:
+            "aliens"
+        }
+    }
 }
 
 enum CharacterAction: String, Codable, Hashable, CaseIterable, Identifiable {
