@@ -19,6 +19,8 @@ struct ChatView: View {
     @State private var showChatSetting: AnyAppAlert?
     @State private var showProfileModal: Bool = false
     
+    var avatarId: String = AvatarModel.mock.avatarId
+    
     var body: some View {
         VStack(spacing: 0) {
             scrollViewSection
@@ -35,6 +37,7 @@ struct ChatView: View {
                     }
             }
         }
+        .toolbarVisibility(.hidden, for: .tabBar)
         .showCustomAlert(alert: $showAlert)
         .showCustomAlert(type: .confirmationDialog, alert: $showChatSetting)
         .showModal(showModal: $showProfileModal) {
@@ -73,31 +76,7 @@ struct ChatView: View {
         TextField("Text here...", text: $textFieldText)
             .keyboardType(.alphabet)
             .autocorrectionDisabled()
-            .padding(12)
-            .padding(.trailing, 60)
-            .overlay(alignment: .trailing, content: {
-                Image(systemName: "arrow.up.circle.fill")
-                    .font(.system(size: 32))
-                    .padding(.trailing, 5)
-                    .foregroundStyle(.accent)
-                    .anyButton {
-                        onSendMessageButtonPressed()
-                    }
-                    .disabled(textFieldText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-            })
-        
-            .background(
-                ZStack {
-                    RoundedRectangle(cornerRadius: 100)
-                        .fill(Color(.systemBackground))
-                    RoundedRectangle(cornerRadius: 100)
-                        .stroke(.gray.opacity(0.5), lineWidth: 1)
-                        
-                }
-            )
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(Color(.secondarySystemBackground))
+            .chatInputStyle(text: $textFieldText, onSend: onSendMessageButtonPressed)
     }
     
     private func profileModal(avatar: AvatarModel) -> some View {
@@ -163,6 +142,48 @@ struct ChatView: View {
     
     private func onAvatarImagePressed() {
         showProfileModal = true
+    }
+}
+
+extension View {
+    func chatInputStyle(
+        text: Binding<String>,
+        onSend: @escaping () -> Void
+    ) -> some View {
+        self.modifier(ChatTextFieldStyle(text: text, onSend: onSend))
+    }
+}
+
+struct ChatTextFieldStyle: ViewModifier {
+    @Binding var text: String
+    var onSend: () -> Void
+
+    func body(content: Content) -> some View {
+        content
+            .padding(12)
+            .padding(.trailing, 60)
+            .overlay(alignment: .trailing) {
+                Image(systemName: "arrow.up.circle.fill")
+                    .font(.system(size: 32))
+                    .padding(.trailing, 5)
+                    .foregroundStyle(.accent)
+                    .opacity(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.3 : 1.0)
+                    .disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .onTapGesture {
+                        onSend()
+                    }
+            }
+            .background {
+                RoundedRectangle(cornerRadius: 100)
+                    .fill(Color(.systemBackground))
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 100)
+                    .stroke(.gray.opacity(0.5), lineWidth: 1)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(Color(.secondarySystemBackground))
     }
 }
 

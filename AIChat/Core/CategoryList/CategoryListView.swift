@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CategoryListView: View {
     
+    @Binding var path: [NavigationPathOption]
     var category: CharacterOption = .default
     var imageName: String = Constants.randomImages
     @State private var avatars: [AvatarModel] = AvatarModel.mocks
@@ -28,14 +29,26 @@ struct CategoryListView: View {
                     title: avatar.name,
                     subTitle: avatar.characterDescription
                 )
+                .anyButton {
+                    onChatPressed(avatar: avatar)
+                }
             }
             .removeListRowFormatting()
         }
         .listStyle(.plain)
         .ignoresSafeArea()
+        .toolbar(.hidden, for: .tabBar)
     }
+    
+    // MARK: -- Func --
+    private func onChatPressed(avatar: AvatarModel) {
+        path.append(.chat(avatarId: avatar.avatarId))
+    }
+    
 }
 
 #Preview {
-    CategoryListView()
+    NavigationStack {
+        CategoryListView(path: .constant([]))
+    }
 }

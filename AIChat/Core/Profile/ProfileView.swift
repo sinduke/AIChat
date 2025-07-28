@@ -14,14 +14,16 @@ struct ProfileView: View {
     @State private var currentUser: UserModel? = .mock
     @State private var myAvatars: [AvatarModel] = []
     @State private var isLoading: Bool = false
+    @State private var path: [NavigationPathOption] = []
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             List {
                 myInfoSection
                 avatarSection
             }
             .navigationTitle("Profile")
+            .navigationDestinationForCoreModule(path: $path)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     settingsButton
@@ -82,7 +84,7 @@ struct ProfileView: View {
                         subTitle: avatar.characterDescription
                     )
                     .anyButton(.highlight) {
-                        
+                        onAvatarPressed(avatar: avatar)
                     }
                 }
                 .onDelete { indexSet in
@@ -124,7 +126,10 @@ struct ProfileView: View {
         try? await Task.sleep(for: .seconds(2))
         isLoading = false
         myAvatars = AvatarModel.mocks
-//        myAvatars = [] // AvatarModel.mocks
+    }
+    
+    private func onAvatarPressed(avatar: AvatarModel) {
+        path.append(.chat(avatarId: avatar.avatarId))
     }
 }
 
