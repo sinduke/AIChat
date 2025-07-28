@@ -13,8 +13,10 @@ struct ChatView: View {
     @State private var avatar: AvatarModel?
     @State private var currentUser: UserModel? = .mock
     @State private var textFieldText: String = ""
-    @State private var showChatSetting: Bool = false
     @State private var scrollViewPosition: String?
+    
+    @State private var showAlert: AnyAppAlert?
+    @State private var showChatSetting: AnyAppAlert?
     
     var body: some View {
         VStack(spacing: 0) {
@@ -32,16 +34,8 @@ struct ChatView: View {
                     }
             }
         }
-        .confirmationDialog("", isPresented: $showChatSetting) {
-            Button("Report Chat/User", role: .destructive) {
-                
-            }
-            Button("Delete", role: .destructive) {
-                
-            }
-        } message: {
-            Text("What do you like to do?")
-        }
+        .showCustomAlert(alert: $showAlert)
+        .showCustomAlert(type: .confirmationDialog, alert: $showChatSetting)
     }
     
     // MARK: -- View --
@@ -82,7 +76,9 @@ struct ChatView: View {
                     .anyButton {
                         onSendMessageButtonPressed()
                     }
+                    .disabled(textFieldText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             })
+        
             .background(
                 ZStack {
                     RoundedRectangle(cornerRadius: 100)
@@ -103,24 +99,46 @@ struct ChatView: View {
         
         let content = textFieldText
         
-        let message = ChatMessageModel(
-            id: UUID().uuidString,
-            chatId: UUID().uuidString,
-            authorId: currentUser.userId,
-            content: content,
-            seenByIds: nil,
-            dateCreated: .now
-        )
-        
-        chatMessages.append(message)
-        scrollViewPosition = message.id
-        
-        textFieldText = ""
+        do {
+            try TextValidationHelper.validate(content, minLength: 4)
+            
+            let message = ChatMessageModel(
+                id: UUID().uuidString,
+                chatId: UUID().uuidString,
+                authorId: currentUser.userId,
+                content: content,
+                seenByIds: nil,
+                dateCreated: .now
+            )
+            
+            chatMessages.append(message)
+            scrollViewPosition = message.id
+            
+            textFieldText = ""
+        } catch let error {
+            showAlert = AnyAppAlert(error: error)
+        }
     }
     
     private func onChatSettingButtonPressed() {
-        showChatSetting = true
-    }
+        
+        showChatSetting = AnyAppAlert(
+            title: "",
+            subtitle: "What would you like to do?",
+            buttons: {
+                AnyView(
+                    Group {
+                        Button("Report Chat/User", role: .destructive) {
+                            
+                        }
+                        Button("Delete", role: .destructive) {
+                            
+                        }
+                    }
+                )
+            }
+        )
+    } 
 }
 
 #Preview {
