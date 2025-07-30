@@ -27,7 +27,7 @@ struct OnboardingCompletedView: View {
             ctaButton
         })
         .padding(16)
-        .toolbar(.hidden, for: .navigationBar)
+//        .toolbar(.hidden, for: .navigationBar)
     }
 
     // MARK: -- view

@@ -10,8 +10,11 @@ internal import AuthenticationServices
 
 struct CreateAccountView: View {
     
+    @Environment(\.authService) private var authService
+    @Environment(\.dismiss) private var dismiss
     var title: String = "Create Account?"
     var subTitle: String = "Don't lost your data! Connect to an SSO provider to save your Account."
+    var onDidSignIn: ((_ isNewUser: Bool) -> Void)?
     
     var body: some View {
         VStack(spacing: 24) {
@@ -31,7 +34,8 @@ struct CreateAccountView: View {
             )
             .frame(height: 55)
             .anyButton(.press) {
-                print("点击了登录按钮")
+                print("点击了Apple登录按钮")
+                onSignInAppleButtonPressed()
             }
             
             Spacer(minLength: 30)
@@ -39,6 +43,21 @@ struct CreateAccountView: View {
         .padding(16)
         .padding(.top, 40)
     }
+    
+    // MARK: -- Func --
+    private func onSignInAppleButtonPressed() {
+        Task {
+            do {
+                let result = try await authService.signInApple()
+                print("成功使用Apple登录 \(result.isNewUser)")
+                onDidSignIn?(result.isNewUser)
+                dismiss()
+            } catch {
+                print("Apple登录失败: \(error.localizedDescription)")
+            }
+        }
+    }
+    
 }
 
 #Preview {

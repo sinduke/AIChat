@@ -31,7 +31,7 @@ struct OnboardingColorView: View {
             .background(.ultraThinMaterial)
         })
         .animation(.smooth, value: selectedColor)
-        .toolbar(.hidden, for: .navigationBar)
+//        .toolbar(.hidden, for: .navigationBar)
     }
 
     // MARK: -- View

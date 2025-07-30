@@ -74,7 +74,8 @@ struct SignInWithAppleButtonView: View {
                 cornerRadius: cornerRadius
             )
 //            Xcode26之后 在这个按钮上添加禁用之后 anyButton并不会相应点击事件
-//            .disabled(true)
+            .disabled(true)
+            .tappableContentShape()
         }
     }
 }
