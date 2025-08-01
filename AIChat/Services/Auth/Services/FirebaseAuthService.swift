@@ -11,6 +11,21 @@ import SignInAppleAsync
 
 struct FirebaseAuthService: AuthServiceProtocol {
     
+    // addAuthenticatedUserListener
+    func addAuthenticatedUserListener(onListenerAttached: (any NSObjectProtocol) -> Void) -> AsyncStream<UserAuthInfo?> {
+        AsyncStream { continuation in
+            let listener = Auth.auth().addStateDidChangeListener { _, currentUser in
+                if let currentUser {
+                    let user = UserAuthInfo(user: currentUser)
+                    continuation.yield(user)
+                } else {
+                    continuation.yield(nil)
+                }
+            }
+            onListenerAttached(listener)
+        }
+    }
+    
     // 查询是否已经登录 User是Firebase中的定义 需要解耦
     func getAuthenticatedUser() -> UserAuthInfo? {
         if let user = Auth.auth().currentUser {

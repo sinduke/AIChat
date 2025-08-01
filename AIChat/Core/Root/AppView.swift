@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AppView: View {
     @State var appState = AppState()
-    @Environment(\.authService) private var authService
+    @Environment(AuthManager.self) private var authManager
     var body: some View {
         AppViewBuilder(
             showTabBar: appState.showTabBar,
@@ -33,14 +33,14 @@ struct AppView: View {
     }
     
     private func checkUserStatus() async {
-        if let user = authService.getAuthenticatedUser() {
+        if let user = authManager.auth {
             // 已认证
             print("已认证用户 用户ID为: \(user.uid)")
         } else {
             // 未认证
             do {
                 print("未认证用户 ---> 执行登录程序")
-                let authResult = try await authService.signInAnonymously()
+                let authResult = try await authManager.signInAnonymously()
                 print("登录成功 用户ID为: \(authResult.user.uid)")
             } catch {
                 print("登录失败 \(error.localizedDescription)")

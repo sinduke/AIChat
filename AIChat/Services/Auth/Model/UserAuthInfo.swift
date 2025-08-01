@@ -15,7 +15,7 @@ struct UserAuthInfo: Sendable {
     let lastSignInDate: Date?
     
     init(
-        uid: String,
+        uid: String = "mock",
         email: String? = nil,
         isAnonymous: Bool = false,
         creationDate: Date? = nil,

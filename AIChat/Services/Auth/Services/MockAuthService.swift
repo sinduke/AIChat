@@ -5,6 +5,7 @@
 //  Created by sinduke on 8/1/25.
 //
 
+import SwiftUI
 
 struct MockAuthService: AuthServiceProtocol {
     
@@ -16,6 +17,12 @@ struct MockAuthService: AuthServiceProtocol {
     
     func getAuthenticatedUser() -> UserAuthInfo? {
         currentUser
+    }
+    
+    func addAuthenticatedUserListener(onListenerAttached: (any NSObjectProtocol) -> Void) -> AsyncStream<UserAuthInfo?> {
+        AsyncStream { continuation in
+            continuation.yield(currentUser)
+        }
     }
     
     func signInAnonymously() async throws -> (user: UserAuthInfo, isNewUser: Bool) {
