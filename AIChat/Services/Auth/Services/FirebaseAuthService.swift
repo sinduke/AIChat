@@ -9,11 +9,7 @@
 import SwiftUI
 import SignInAppleAsync
 
-extension EnvironmentValues {
-    @Entry var authService: FirebaseAuthService = FirebaseAuthService()
-}
-
-struct FirebaseAuthService {
+struct FirebaseAuthService: AuthServiceProtocol {
     
     // 查询是否已经登录 User是Firebase中的定义 需要解耦
     func getAuthenticatedUser() -> UserAuthInfo? {

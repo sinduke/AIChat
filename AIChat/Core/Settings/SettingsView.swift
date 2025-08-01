@@ -190,7 +190,20 @@ struct SettingsView: View {
     }
 }
 
-#Preview {
+#Preview("NoAuth") {
     SettingsView()
         .environment(AppState())
+        .environment(\.authService, MockAuthService(user: nil))
+}
+
+#Preview("匿名SettingsView") {
+    SettingsView()
+        .environment(AppState())
+        .environment(\.authService, MockAuthService(user: .mock(isAnonymous: true)))
+}
+
+#Preview("非匿名SettingsView") {
+    SettingsView()
+        .environment(AppState())
+        .environment(\.authService, MockAuthService(user: .mock(isAnonymous: false)))
 }
