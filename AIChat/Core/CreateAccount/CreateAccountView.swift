@@ -10,6 +10,7 @@ internal import AuthenticationServices
 
 struct CreateAccountView: View {
     @Environment(AuthManager.self) private var authManager
+    @Environment(UserManager.self) private var userManager
     @Environment(\.dismiss) private var dismiss
     var title: String = "Create Account?"
     var subTitle: String = "Don't lost your data! Connect to an SSO provider to save your Account."
@@ -49,6 +50,7 @@ struct CreateAccountView: View {
             do {
                 let result = try await authManager.signInApple()
                 print("成功使用Apple登录 \(result.isNewUser)")
+                try userManager.login(user: result.user, isNewUser: result.isNewUser)
                 onDidSignIn?(result.isNewUser)
                 dismiss()
             } catch {
@@ -61,4 +63,6 @@ struct CreateAccountView: View {
 
 #Preview {
     CreateAccountView()
+        .environment(UserManager(service: FirebaseUserService()))
+        .environment(AuthManager(service: FirebaseAuthService()))
 }

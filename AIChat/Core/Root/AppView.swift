@@ -10,6 +10,7 @@ import SwiftUI
 struct AppView: View {
     @State var appState = AppState()
     @Environment(AuthManager.self) private var authManager
+    @Environment(UserManager.self) private var userManager
     var body: some View {
         AppViewBuilder(
             showTabBar: appState.showTabBar,
@@ -32,18 +33,23 @@ struct AppView: View {
         }
     }
     
-    private func checkUserStatus() async {
+    private func checkUserStatus(maxRetries: Int = 3) async {
         if let user = authManager.auth {
-            // 已认证
-            print("已认证用户 用户ID为: \(user.uid)")
-        } else {
-            // 未认证
             do {
-                print("未认证用户 ---> 执行登录程序")
-                let authResult = try await authManager.signInAnonymously()
-                print("登录成功 用户ID为: \(authResult.user.uid)")
+                try await RetryHelper.retry(maxRetries: 3, maxDelay: 20) {
+                    try userManager.login(user: user, isNewUser: true)
+                }
             } catch {
-                print("登录失败 \(error.localizedDescription)")
+                print("🚨 登录流程最终失败: \(error.localizedDescription)")
+            }
+        } else {
+            do {
+                let authResult = try await authManager.signInAnonymously()
+                try await RetryHelper.retry(maxRetries: 3, maxDelay: 20) {
+                    try userManager.login(user: authResult.user, isNewUser: authResult.isNewUser)
+                }
+            } catch {
+                print("🚨 登录流程最终失败: \(error.localizedDescription)")
             }
         }
     }

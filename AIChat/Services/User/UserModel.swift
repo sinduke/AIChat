@@ -7,25 +7,72 @@
 
 import SwiftUI
 
+actor UserModelStorage {
+    private var user: UserModel?
+    
+    func set(_ newUser: UserModel) {
+        self.user = newUser
+    }
+    
+    func get() -> UserModel? {
+        return user
+    }
+}
+
 struct UserModel: Codable, Identifiable, Hashable {
     var id: String {
         userId
     }
     let userId: String
-    let dateCreated: Date?
+    let email: String?
+    let isAnonymous: Bool?
+    let createdDate: Date?
+    let createdVersion: String?
+    let lastSignInDate: Date?
     let didCompleteOnboarding: Bool?
     let profileColorHex: String?
     
     init(
         userId: String,
-        dateCreated: Date? = nil,
+        email: String? = nil,
+        isAnonymous: Bool? = nil,
+        createdDate: Date? = nil,
+        createdVersion: String? = nil,
+        lastSignInDate: Date? = nil,
         didCompleteOnboarding: Bool? = nil,
         profileColorHex: String? = nil
     ) {
         self.userId = userId
-        self.dateCreated = dateCreated
+        self.email = email
+        self.isAnonymous = isAnonymous
+        self.createdDate = createdDate
+        self.lastSignInDate = lastSignInDate
+        self.createdVersion = createdVersion
         self.didCompleteOnboarding = didCompleteOnboarding
         self.profileColorHex = profileColorHex
+    }
+    
+    init(auth: UserAuthInfo, createVersion: String?) {
+        self.init(
+            userId: auth.uid,
+            email: auth.email,
+            isAnonymous: auth.isAnonymous,
+            createdDate: auth.creationDate,
+            createdVersion: createVersion,
+            lastSignInDate: auth.lastSignInDate
+        )
+    }
+    
+    
+    enum CodingKeys: String, @preconcurrency CodingKey {
+        case userId = "user_id"
+        case email
+        case isAnonymous = "is_anonymous"
+        case createdDate = "created_date"
+        case lastSignInDate = "last_sign_in_date"
+        case createdVersion = "created_version"
+        case didCompleteOnboarding = "did_complete_onboarding"
+        case profileColorHex = "profile_color_hex"
     }
     
     var profileColorCalculated: Color {
@@ -42,31 +89,26 @@ struct UserModel: Codable, Identifiable, Hashable {
         return [
             Self(
                 userId: "user_001",
-                dateCreated: now,
                 didCompleteOnboarding: true,
                 profileColorHex: "#FF5733" // 红橙
             ),
             Self(
                 userId: "user_002",
-                dateCreated: now.addingTimeInterval(days: -1),
                 didCompleteOnboarding: false,
                 profileColorHex: "#33C1FF" // 蓝
             ),
             Self(
                 userId: "user_003",
-                dateCreated: now.addingTimeInterval(days: -3, hours: -5),
                 didCompleteOnboarding: nil,
                 profileColorHex: "#85FF33" // 绿
             ),
             Self(
                 userId: "user_004",
-                dateCreated: nil,
                 didCompleteOnboarding: true,
                 profileColorHex: nil
             ),
             Self(
                 userId: "user_005",
-                dateCreated: now.addingTimeInterval(hours: -2, minutes: -30),
                 didCompleteOnboarding: false,
                 profileColorHex: "#F1C40F" // 金黄
             )
