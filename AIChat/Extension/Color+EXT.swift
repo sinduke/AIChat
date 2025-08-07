@@ -47,4 +47,9 @@ extension Color {
         return nil
 #endif
     }
+    
+    var asHex: String {
+        toHex() ?? Constants.accentColorHex
+    }
+    
 }

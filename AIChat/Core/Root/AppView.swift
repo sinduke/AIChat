@@ -29,6 +29,10 @@ struct AppView: View {
                 Task {
                     await checkUserStatus()
                 }
+            } else {
+                Task {
+                    await checkUserStatus()
+                }
             }
         }
     }
@@ -37,7 +41,7 @@ struct AppView: View {
         if let user = authManager.auth {
             do {
                 try await RetryHelper.retry(maxRetries: 3, maxDelay: 20) {
-                    try userManager.login(user: user, isNewUser: true)
+                    try await userManager.login(auth: user, isNewUser: true)
                 }
             } catch {
                 print("🚨 登录流程最终失败: \(error.localizedDescription)")
@@ -46,7 +50,7 @@ struct AppView: View {
             do {
                 let authResult = try await authManager.signInAnonymously()
                 try await RetryHelper.retry(maxRetries: 3, maxDelay: 20) {
-                    try userManager.login(user: authResult.user, isNewUser: authResult.isNewUser)
+                    try await userManager.login(auth: authResult.user, isNewUser: authResult.isNewUser)
                 }
             } catch {
                 print("🚨 登录流程最终失败: \(error.localizedDescription)")
@@ -58,8 +62,12 @@ struct AppView: View {
 
 #Preview("OnboardingView") {
     AppView(appState: AppState(showTabBar: false))
+        .environment(UserManager(service: MockUserService(user: .mock)))
+        .environment(AuthManager(service: MockAuthService(user: .mock())))
 }
 
 #Preview("TabbarView") {
     AppView(appState: AppState(showTabBar: true))
+        .environment(UserManager(service: MockUserService(user: nil)))
+        .environment(AuthManager(service: MockAuthService(user: nil)))
 }

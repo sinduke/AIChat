@@ -50,7 +50,7 @@ struct CreateAccountView: View {
             do {
                 let result = try await authManager.signInApple()
                 print("成功使用Apple登录 \(result.isNewUser)")
-                try userManager.login(user: result.user, isNewUser: result.isNewUser)
+                try await userManager.login(auth: result.user, isNewUser: result.isNewUser)
                 onDidSignIn?(result.isNewUser)
                 dismiss()
             } catch {

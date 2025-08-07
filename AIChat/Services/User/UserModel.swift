@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import IdentifiableByString
 
 actor UserModelStorage {
     private var user: UserModel?
@@ -19,10 +20,7 @@ actor UserModelStorage {
     }
 }
 
-struct UserModel: Codable, Identifiable, Hashable {
-    var id: String {
-        userId
-    }
+struct UserModel: Codable {
     let userId: String
     let email: String?
     let isAnonymous: Bool?
@@ -63,25 +61,6 @@ struct UserModel: Codable, Identifiable, Hashable {
         )
     }
     
-    
-    enum CodingKeys: String, @preconcurrency CodingKey {
-        case userId = "user_id"
-        case email
-        case isAnonymous = "is_anonymous"
-        case createdDate = "created_date"
-        case lastSignInDate = "last_sign_in_date"
-        case createdVersion = "created_version"
-        case didCompleteOnboarding = "did_complete_onboarding"
-        case profileColorHex = "profile_color_hex"
-    }
-    
-    var profileColorCalculated: Color {
-        guard let hex = profileColorHex, hex.hasPrefix("#") || hex.count == 6 else {
-            return .accent
-        }
-        return Color(hex: hex)
-    }
-    
     static let mock: Self = mocks.first!
     
     static let mocks: [Self] = {
@@ -114,4 +93,26 @@ struct UserModel: Codable, Identifiable, Hashable {
             )
         ]
     }()
+}
+
+extension UserModel {
+    
+    enum CodingKeys: String, @preconcurrency CodingKey {
+        case userId = "user_id"
+        case email
+        case isAnonymous = "is_anonymous"
+        case createdDate = "created_date"
+        case lastSignInDate = "last_sign_in_date"
+        case createdVersion = "created_version"
+        case didCompleteOnboarding = "did_complete_onboarding"
+        case profileColorHex = "profile_color_hex"
+    }
+    
+    @MainActor
+    var profileColorCalculated: Color {
+        guard let hex = profileColorHex, hex.hasPrefix("#") || hex.count == 6 else {
+            return .accent
+        }
+        return Color(hex: hex)
+    }
 }
