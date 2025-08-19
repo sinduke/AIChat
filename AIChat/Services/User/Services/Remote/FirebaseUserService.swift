@@ -9,8 +9,7 @@
 import FirebaseFirestore
 import SwiftfulFirestore
 
-//typealias ListenerRegistration = FirebaseFirestore.ListenerRegistration
-
+// typealias ListenerRegistration = FirebaseFirestore.ListenerRegistration
 struct FirebaseUserService: RemoteUserServiceProtocol {
     var collection: CollectionReference {
         Firestore.firestore().collection("user")

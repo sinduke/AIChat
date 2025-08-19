@@ -10,15 +10,12 @@ import Firebase
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     // swiftlint:disable:next implicitly_unwrapped_optional
-    var userManager: UserManager!
-    // swiftlint:disable:next implicitly_unwrapped_optional
-    var authManager: AuthManager!
+    var dependencies: Dependencies!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions languageOption: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
         
-        userManager = UserManager(service: ProductionUserServices())
-        authManager = AuthManager(service: FirebaseAuthService())
+        dependencies = Dependencies()
         
         return true
     }
@@ -30,8 +27,23 @@ struct AIChatApp: App {
     var body: some Scene {
         WindowGroup {
             AppView()
-                .environment(delegate.userManager)
-                .environment(delegate.authManager)
+                .environment(delegate.dependencies.userManager)
+                .environment(delegate.dependencies.authManager)
+                .environment(delegate.dependencies.aiManager)
         }
     }
+}
+
+// @MainActor
+struct Dependencies {
+    let userManager: UserManager
+    let authManager: AuthManager
+    let aiManager: AIManager
+    
+    init() {
+        userManager = UserManager(service: ProductionUserServices())
+        authManager = AuthManager(service: FirebaseAuthService())
+        aiManager = AIManager(service: OpenAIService())
+    }
+    
 }

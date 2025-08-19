@@ -10,6 +10,8 @@ import SwiftUI
 struct CreateAvatarView: View {
     
     @Environment(\.dismiss) private var dismiss
+    @Environment(AIManager.self) private var aiManager
+    
     @State private var avatarName: String = ""
     @State private var characterOption: CharacterOption = .default
     @State private var characterAction: CharacterAction = .default
@@ -46,7 +48,7 @@ struct CreateAvatarView: View {
     // MARK: -- View --
     private var backButtonView: some View {
         Image(systemName: "xmark")
-            .font(.title)
+            .font(.title3)
             .foregroundStyle(.accent)
             .fontWeight(.semibold)
             .anyButton(.press) {
@@ -147,8 +149,18 @@ struct CreateAvatarView: View {
     private func onGenerateImageButtonPressed() {
         isGenerating = true
         Task {
-            try? await Task.sleep(for: .seconds(2))
-            generateImage = UIImage(systemName: "lasso.badge.sparkles")
+            do {
+                let prompt = AvatarDescriptionBuilder(
+                    characterOption: characterOption,
+                    characterAction: characterAction,
+                    characterLocation: characterLocation
+                ).avatarDiscription
+                
+                generateImage = try await aiManager.generateImage(input: prompt)
+                
+            } catch {
+                print("Error generating image: \(error)")
+            }
             isGenerating = false
         }
     }
@@ -166,4 +178,5 @@ struct CreateAvatarView: View {
 
 #Preview {
     CreateAvatarView()
+        .environment(AIManager(service: MockAIService()))
 }
