@@ -11,6 +11,8 @@ struct CreateAvatarView: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(AIManager.self) private var aiManager
+    @Environment(AuthManager.self) private var authManager
+    @Environment(AvatarManager.self) private var avatarManager
     
     @State private var avatarName: String = ""
     @State private var characterOption: CharacterOption = .default
@@ -19,12 +21,12 @@ struct CreateAvatarView: View {
     @State private var isGenerating: Bool = false
     @State private var generateImage: UIImage?
     @State private var isSaving: Bool = false
+    @State private var showAlert: AnyAppAlert?
     @FocusState private var isTextFieldFocused: Bool
     
     var body: some View {
         NavigationStack {
             List {
-                
                 nameSection
                 attributesSection
                 imageSection
@@ -36,7 +38,8 @@ struct CreateAvatarView: View {
                     backButtonView
                 }
             }
-            .dismissKeyboardOnTap()
+            .showCustomAlert(alert: $showAlert)
+//            .dismissKeyboardOnTap()
             .onAppear {
                 FocusStateUtils.bind {
                     isTextFieldFocused = false
@@ -166,12 +169,32 @@ struct CreateAvatarView: View {
     }
     
     private func onSaveButtonPressed() {
+        guard let generateImage else { return }
         isSaving = true
         Task {
-            try? await Task.sleep(for: .seconds(2))
-            isSaving = false
             
-            dismiss()
+            do {
+                try TextValidationHelper.validate(avatarName, minLength: 3)
+                let uid = try authManager.getAuthId()
+                
+                let avatar = AvatarModel(
+                    avatarId: UUID().uuidString,
+                    name: avatarName,
+                    characterOption: characterOption,
+                    characterAction: characterAction,
+                    characterLocation: characterLocation,
+                    profileImageName: nil,
+                    autherId: uid,
+                    dateCrerated: .now
+                )
+                // Upload image to Firebase Storage
+                try await avatarManager.createAvatar(avatar: avatar, image: generateImage)
+                // dismiss screen
+                dismiss()
+            } catch {
+                showAlert = AnyAppAlert(error: error)
+            }
+            isSaving = false
         }
     }
 }
@@ -179,4 +202,6 @@ struct CreateAvatarView: View {
 #Preview {
     CreateAvatarView()
         .environment(AIManager(service: MockAIService()))
+        .environment(AvatarManager(service: MockAvatarService()))
+        .environment(AuthManager(service: MockAuthService(user: .mock())))
 }

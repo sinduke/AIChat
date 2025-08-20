@@ -14,7 +14,7 @@ struct AvatarModel: Codable, Hashable, Identifiable {
     let characterOption: CharacterOption?
     let characterAction: CharacterAction?
     let characterLocation: CharacterLocation?
-    let profileImageName: String?
+    private(set) var profileImageName: String?
     let autherId: String?
     let dateCrerated: Date?
 
@@ -40,6 +40,21 @@ struct AvatarModel: Codable, Hashable, Identifiable {
 
     var characterDescription: String {
         AvatarDescriptionBuilder(avatar: self).avatarDiscription
+    }
+    
+    mutating func updateProfileImage(imageName: String) {
+        profileImageName = imageName
+    }
+    
+    enum CodingKeys: String, @preconcurrency CodingKey {
+        case avatarId = "avatar_id"
+        case name
+        case characterOption = "character_option"
+        case characterAction = "character_action"
+        case characterLocation = "character_location"
+        case profileImageName = "profile_image_name"
+        case autherId = "auther_id"
+        case dateCrerated = "date_crerated"
     }
 
     static var mocks: [Self] {
